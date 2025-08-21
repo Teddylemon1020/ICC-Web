@@ -10,19 +10,19 @@ export default function Signup() {
   const [status, setStatus] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
 
-  const validatePassword = () => {
+  const validatePassword = (passwordValue: string, confirmValue: string) => {
     const newErrors: string[] = [];
 
-    if (password.length < 8) {
+    if (passwordValue.length < 8) {
       newErrors.push("Password must be at least 8 characters long.");
     }
-    if (!/[A-Z]/.test(password)) {
+    if (!/[A-Z]/.test(passwordValue)) {
       newErrors.push("Password must contain at least one uppercase letter.");
     }
-    if (!/[0-9]/.test(password)) {
+    if (!/[0-9]/.test(passwordValue)) {
       newErrors.push("Password must contain at least one number.");
     }
-    if (password !== confirmPassword) {
+    if (passwordValue !== confirmValue) {
       newErrors.push("Passwords do not match.");
     }
 
@@ -37,7 +37,7 @@ export default function Signup() {
       return;
     }
 
-    if (!validatePassword()) {
+    if (!validatePassword(password, confirmPassword)) {
       return;
     }
 
@@ -80,18 +80,10 @@ export default function Signup() {
           placeholder="Enter password"
           value={password}
           onChange={(e) => {
-            setConfirmPassword(e.target.value);
-            validatePassword();
+            const value = e.target.value;
+            setPassword(value);
+            validatePassword(value, confirmPassword); // realtime validation
           }}
-          className="border p-2 w-full"
-          required
-        />
-
-        <input
-          type="password"
-          placeholder="Enter password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           className="border p-2 w-full"
           required
         />
@@ -101,12 +93,22 @@ export default function Signup() {
           placeholder="Confirm password"
           value={confirmPassword}
           onChange={(e) => {
-            setConfirmPassword(e.target.value);
-            validatePassword();
+            const value = e.target.value;
+            setConfirmPassword(value);
+            validatePassword(password, value); // realtime validation
           }}
           className="border p-2 w-full"
           required
         />
+
+        {/* Show password validation errors */}
+        {errors.length > 0 && (
+          <ul className="text-red-600 text-sm list-disc list-inside">
+            {errors.map((err, idx) => (
+              <li key={idx}>{err}</li>
+            ))}
+          </ul>
+        )}
 
         <input
           type="tel"
