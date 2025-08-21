@@ -12,7 +12,7 @@ export default function Addhappening() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!file || !headline || !body) {
+    if (!file || !headline || !body || !date || !school) {
       setStatus("⚠️ Please provide a headline, body, and image");
       return;
     }
