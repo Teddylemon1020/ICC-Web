@@ -76,6 +76,14 @@ export default function Signup() {
         className="space-y-4 p-6 bg-white rounded-lg shadow-md w-full max-w-md"
       >
         <input
+          type="text"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="border p-2 w-full"
+          required
+        />
+        <input
           type="password"
           placeholder="Enter password"
           value={password}
