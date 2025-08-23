@@ -70,10 +70,10 @@ export default function Signup() {
   }
 
   return (
-    <div className="flex justify-center items-start min-h-screen pt-10 bg-gray-100">
+    <div className="flex justify-center items-start min-h-screen pt-10 bg-gray-100  n bg-gradient-to-b from-black to-blue-900 ">
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 p-6 bg-white rounded-lg shadow-md w-full max-w-md"
+        className="space-y-4 p-6 bg-white rounded-lg shadow-md w-full max-w-md text-black"
       >
         <input
           type="text"
