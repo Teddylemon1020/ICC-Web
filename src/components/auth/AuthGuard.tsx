@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
-
+import bcrypt from "bcrypt";
 export default function AuthGuard({ children }: { children: ReactNode }) {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -47,3 +47,36 @@ export const verificationPipeLine = [
     return user;
   },
 ];
+
+const SALT_ROUNDS = 12; // 10–12 is typical
+
+// Hash (with auto-generated salt)
+export async function hashPassword(password: string): Promise<string> {
+  const hash = await bcrypt.hash(password, SALT_ROUNDS);
+  return hash;
+}
+
+// Verify password against stored hash
+export async function verifyPassword(
+  password: string,
+  storedHash: string
+): Promise<boolean> {
+  return bcrypt.compare(password, storedHash);
+}
+
+// Demo
+(async () => {
+  const password = "mySecret123";
+
+  // Hash
+  const hash = await hashPassword(password);
+  console.log("Stored hash:", hash);
+
+  // Verify (will be true)
+  const ok = await verifyPassword(password, hash);
+  console.log("Correct password?", ok);
+
+  // Wrong password
+  const fail = await verifyPassword("wrongPassword", hash);
+  console.log("Wrong password?", fail);
+})();
